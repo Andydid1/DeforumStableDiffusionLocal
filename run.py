@@ -1256,56 +1256,56 @@ def main():
 	    render_image_batch(args)    
 
 
-	skip_video_for_run_all = False #@param {type: 'boolean'}
-	fps = 12 #@param {type:"number"}
-	#@markdown **Manual Settings**
-	use_manual_settings = False #@param {type:"boolean"}
-	image_path = "./output/out_%05d.png" #@param {type:"string"}
-	mp4_path = "./output/out_%05d.mp4" #@param {type:"string"}
+	# skip_video_for_run_all = False #@param {type: 'boolean'}
+	# fps = 12 #@param {type:"number"}
+	# #@markdown **Manual Settings**
+	# use_manual_settings = False #@param {type:"boolean"}
+	# image_path = "./output/out_%05d.png" #@param {type:"string"}
+	# mp4_path = "./output/out_%05d.mp4" #@param {type:"string"}
 
 
-	if skip_video_for_run_all == True or opt.enable_animation_mode == False:
-	    print('Skipping video creation, uncheck skip_video_for_run_all if you want to run it')
-	else:
-	    import os
-	    import subprocess
-	    from base64 import b64encode
+	# if skip_video_for_run_all == True or opt.enable_animation_mode == False:
+	#     print('Skipping video creation, uncheck skip_video_for_run_all if you want to run it')
+	# else:
+	#     import os
+	#     import subprocess
+	#     from base64 import b64encode
 
-	    print(f"{image_path} -> {mp4_path}")
+	#     print(f"{image_path} -> {mp4_path}")
 
-	    if use_manual_settings:
-	        max_frames = "200" #@param {type:"string"}
-	    else:
-	        image_path = os.path.join(args.outdir, f"{args.timestring}_%05d.png")
-	        mp4_path = os.path.join(args.outdir, f"{args.timestring}.mp4")
-	        max_frames = str(anim_args.max_frames)
+	#     if use_manual_settings:
+	#         max_frames = "200" #@param {type:"string"}
+	#     else:
+	#         image_path = os.path.join(args.outdir, f"{args.timestring}_%05d.png")
+	#         mp4_path = os.path.join(args.outdir, f"{args.timestring}.mp4")
+	#         max_frames = str(anim_args.max_frames)
 
-	    # make video
-	    cmd = [
-	        'ffmpeg',
-	        '-y',
-	        '-vcodec', 'png',
-	        '-r', str(fps),
-	        '-start_number', str(0),
-	        '-i', image_path,
-	        '-frames:v', max_frames,
-	        '-c:v', 'libx264',
-	        '-vf',
-	        f'fps={fps}',
-	        '-pix_fmt', 'yuv420p',
-	        '-crf', '17',
-	        '-preset', 'veryfast',
-	        mp4_path
-	    ]
-	    process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	    stdout, stderr = process.communicate()
-	    if process.returncode != 0:
-	        print(stderr)
-	        raise RuntimeError(stderr)
+	#     # make video
+	#     cmd = [
+	#         'ffmpeg',
+	#         '-y',
+	#         '-vcodec', 'png',
+	#         '-r', str(fps),
+	#         '-start_number', str(0),
+	#         '-i', image_path,
+	#         '-frames:v', max_frames,
+	#         '-c:v', 'libx264',
+	#         '-vf',
+	#         f'fps={fps}',
+	#         '-pix_fmt', 'yuv420p',
+	#         '-crf', '17',
+	#         '-preset', 'veryfast',
+	#         mp4_path
+	#     ]
+	#     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	#     stdout, stderr = process.communicate()
+	#     if process.returncode != 0:
+	#         print(stderr)
+	#         raise RuntimeError(stderr)
 
-	    mp4 = open(mp4_path,'rb').read()
-	    data_url = "data:video/mp4;base64," + b64encode(mp4).decode()
-	    display.display( display.HTML(f'<video controls loop><source src="{data_url}" type="video/mp4"></video>') )
+	#     mp4 = open(mp4_path,'rb').read()
+	#     data_url = "data:video/mp4;base64," + b64encode(mp4).decode()
+	#     display.display( display.HTML(f'<video controls loop><source src="{data_url}" type="video/mp4"></video>') )
 
 
 if __name__ == "__main__":
